@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        {% load staticfiles %}
+        <link rel="stylesheet" type="text/css" href=
+                "{%static  "css/basic.css" %}">
+        <link rel="stylesheet" type="text/css" href=
+                "{%static  "css/jquery-ui.css" %}">
+        <link rel="stylesheet" type="text/css" href=
+                "{%static  "css/registration.css" %}">
+        <script src="{% static "javascript/jquery-2.1.4.min.js" %}"></script>
+        <script src="{% static "javascript/jquery-ui.js" %}"></script>
+        <script src="{% static "javascript/jquery.validate.js" %}"></script>
+        <script src="{% static "javascript/additional-methods.js" %}"></script>
+        <script src="{% static "javascript/registration.js" %}"></script>
+        <title>Welcome!</title>
+    </head>
+<body>
+    {% block menu %}
+        <div id="menu">
+            <a href="/" title="Home">
+                <i class="icon home"></i>
+            </a>
+{#            <a href="/" title="Login/Logout">#}
+{#                <i class="icon logout"></i>#}
+{#            </a>#}
+            {% if username %}
+                <label class="logged_user">Logged in as '{{ username }}'</label>
+            {% endif %}
+        </div>
+    {% endblock %}
+    {% block content %}
+        <div id="content_wrapper">
+            <div id="welcome">
+                <h1> Annotation experiment</h1>
+                <h3>Welcome, dear guest, to our experiment. </h3>
+                <p class="main">
+                    If you are eligible for our experiment, you
+                    have received all required information already.
+                    In the next step you may sign up and log in to annotate
+                    tweets.
+                    Please, use the email address for registration that
+                    we assigned you.
+                </p>
+                Thanks for your interest in our experiment, <br>
+                Stefan
+            </div>
+            <div id="log_container">
+                <div id="tab_box">
+                    <a id="signup" class="tab signup">Sign up</a>
+                    <a id="login" class="tab select">Login</a>
+                </div>
+                <div id="panel">
+                    <div id="login_box">
+                        {% include "login_form.html" %}
+                    </div>
+                    <div id="signup_box">
+                        {% include "register_form.html" %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+
+    {% block messages %}
+        {% if message %}
+            <p>{{ message }}</p>
+        {% endif %}
+    {% endblock %}
+</body>
+</html>

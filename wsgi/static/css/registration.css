@@ -1,0 +1,322 @@
+/* Required fields */
+span.required { color: #FF0000; }
+
+/* Style of tool tips */
+.ui_tooltip {
+    font-family: "Arial Black", Gadget, sans-serif;
+    font-size: 15px;
+    max-width: 800px;
+    /*background-color:#000;*/
+    border:1px solid #000;
+    padding: 10px 15px;
+    /*color: #fff;*/
+    /*opacity: 0.7;*/
+
+    /* outline radius for mozilla/firefox only */
+    -moz-box-shadow:0 0 10px #000;
+    -webkit-box-shadow:0 0 10px #000;
+}
+
+/* Tool tip button */
+/* http://www.davidjrush.com/blog/2011/12/simple-jquery-tooltip/ */
+span.question {
+  cursor: pointer;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background-color: #89A4CC;
+  line-height: 16px;
+  color: White;
+  font-size: 13px;
+  font-weight: bold;
+  border-radius: 8px;
+  text-align: center;
+  position: relative;
+}
+
+span.question:hover {
+    background-color: #3D6199;
+}
+
+div.tooltip {
+  background-color: #3D6199;
+  color: White;
+  position: absolute;
+  left: 25px;
+  top: -25px;
+  z-index: 1000000;
+  width: 250px;
+  border-radius: 5px;
+}
+
+div.tooltip:before {
+  border-color: transparent #3D6199 transparent transparent;
+  border-right: 6px solid #3D6199;
+  border-style: solid;
+  border-width: 6px 6px 6px 0px;
+  content: "";
+  display: block;
+  height: 0;
+  width: 0;
+  line-height: 0;
+  position: absolute;
+  top: 40%;
+  left: -6px;
+}
+
+div.tooltip p {
+  margin: 10px;
+  color: White;
+}
+
+/* Input element style */
+/* http://callmenick.com/post/various-css-input-text-styles */
+input[type="text"], input[type="password"] {
+  padding: 10px;
+  border: solid 1px #dcdcdc;
+  transition: box-shadow 0.3s, border 0.3s;
+  width: 280px;
+}
+input[type="text"]:focus,
+input[type="text"].focus,
+input[type="password"]:focus,
+input[type="password"].focus{
+  border: solid 1px #2f9596;
+  box-shadow: 0 0 5px 1px #2f9596;
+}
+
+/* Style placeholder text in inputs */
+::-webkit-input-placeholder {
+   color: #000;
+   opacity: 0.6;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   color: #000;
+   opacity: 0.6;
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   color: #000;
+   opacity: 0.6;
+}
+
+:-ms-input-placeholder {
+   color: #000;
+   opacity: 0.6;
+}
+
+
+/* Style of radio buttons */
+/* http://codepen.io/joezimjs/pen/yBgCD */
+/* HTML5 Boilerplate accessible hidden styles */
+[type="radio"].is_radiobutton {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+/* Multiple radio buttons per line */
+label.is_radiobutton {
+  cursor: pointer;
+  display: inline-block;
+  line-height: 1.8;
+}
+
+[type="radio"] + label{
+    font-size: 16px;
+    cursor: default;
+}
+
+/* the basic, unchecked style */
+[type="radio"].is_radiobutton + label:before {
+  content: '';
+  display: inline-block;
+  width: .75em;
+  height: .75em;
+  vertical-align: middle;
+  border-radius: 100%;
+  border: .05em solid black;
+  box-shadow: inset .05em .05em .1em black;
+  margin-right: 0.5em;
+  transition: 0.35s ease all;
+  outline-offset: .1em;
+}
+
+/* the checked style using the :checked pseudo class */
+[type="radio"].is_radiobutton:checked + label:before {
+  background: #09c;
+}
+
+/* never forget focus styling */
+[type="radio"].is_radiobutton:focus + label:before {
+  outline: thin dotted black;
+}
+
+/* Nothing to see here. */
+body {
+  margin: 0;
+  /*font-family: sans-serif;*/
+  /*font-size: 18px;*/
+}
+
+legend {
+  color: #fff;
+  background: #000;
+  padding: 0.25em 1em;
+  border-radius: 1em;
+}
+
+.by {
+  font-size: .75em;
+  text-align: center;
+}
+
+
+
+
+/* Dropdown list style */
+/* https://coderwall.com/p/w7npmq/fully-custom-select-box-simple-css-only */
+/* http://codepen.io/gnclmorais/details/cHkqt */
+.select_style {
+    border: 1px solid #ccc;
+    width: 300px;
+    border-radius: 3px;
+    background: #fafafa url("../img/arrowdown.gif") no-repeat 95% 50%;
+    padding: 10px;
+    /*/!*margin: 10px;*!/*/
+    border: 1px solid #ccc;
+    /*/!*width: 120px;*!/*/
+    border-radius: 3px;
+    overflow: hidden;
+    background-color: #fff;
+    -moz-appearance: none;
+    text-indent: 0.01px;
+    text-overflow: '';
+}
+
+.select_style select {
+    padding: 5px 8px;
+    color: #000;
+    opacity: 0.6;
+    /*/!*width: 130%;*!/*/
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    background-image: none;
+    background-color: transparent;
+    -webkit-appearance: none;
+       -moz-appearance: none;
+            appearance: none;
+}
+
+.select_style select:focus {
+    /*outline: none;*/
+}
+
+select option:enabled{
+    color: #000;
+    opacity: 0.6;
+}
+
+/* Style of login/sign-up form */
+/* http://www.9lessons.info/2011/05/tab-style-login-and-signup-with-css.html */
+#log_container {
+    width: 36%;
+    float: left;
+    min-width: 36%;
+}
+
+#panel {
+    background-color: #FFF;
+    overflow: auto;
+    border-radius: 25px;
+}
+
+
+/* tab_box containing the 2 tabs for login/signup */
+#tab_box {
+    height: 40px
+}
+
+#tab_box a {
+    cursor: pointer;
+}
+
+.tab {
+    border-radius: 10px 10px 0px 0px;
+    background: #dedede;
+    display: block;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    width: 100px;
+    float: right;
+    font-weight: bold;
+    -webkit-border-top-left-radius: 4px;
+    -webkit-border-top-right-radius: 4px;
+    -moz-border-radius: 4px 4px 0px 0px;
+    padding: 0px 10px;
+}
+
+a {
+    color: #000;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+}
+.signup {
+    margin-left: 8px;
+    margin-right: 25px;
+}
+.select {
+    background-color: #FFF;
+}
+
+/* panel */
+#login_box {
+    min-height: 200px;
+    padding: 10px;
+}
+#signup_box {
+    min-height: 200px;
+    padding: 10px;
+    display: none;
+}
+
+
+
+/* Login style */
+#login_error {
+    line-height: 3em;
+}
+
+
+
+#login_error label.error {
+    /* Remove margin from label.error to align message left  */
+    margin-left: -10px;
+}
+
+
+/* Text is on the left, login menu on the right */
+#welcome {
+    float: left;
+    width: 62%;
+    margin-right: 2%;
+}
+
+#content_wrapper {
+    margin: 5%;
+}
+
+
+/* Text formattings */
+.main {
+    text-align: justify;
+}

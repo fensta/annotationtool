@@ -1,0 +1,16 @@
+<form id="login_form" onsubmit="return false;">
+    {% csrf_token %}
+    <p>
+        <label for="username"> User name </label><br>
+        <input type="text" name="username" id="username_log"
+               placeholder="-- Username --">
+    </p>
+    <p>
+        <label for="password"> Password </label><br>
+        <input type="password" name="password" id="password_log"
+               placeholder="-- Password --">
+    </p>
+    <input name="registered" id="login_submit" type="submit" value="Login"
+           onclick="login(event);">
+    <div id="login_error"></div>
+</form>

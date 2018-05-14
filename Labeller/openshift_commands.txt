@@ -1,0 +1,5 @@
+# Contains some useful commands for deploying apps with Openshift
+# debug app remotely
+rhc tail <app>
+# start app
+rhc start-app <app>

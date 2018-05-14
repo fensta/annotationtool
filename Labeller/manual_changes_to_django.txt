@@ -1,0 +1,32 @@
+taken from here: https://groups.google.com/forum/#!topic/django-users/8xvTIrD9azI
+a) in django/db/models/fields/__init__.py (the to_python() function around line
+   907) replace the function:
+    def to_python(self, value):
+        try:
+            return int(value)
+        except ValueError:
+            try:
+                # As mongoDB id is hex string, try to parse it.
+                # If it raises exception than raise validation error
+                # else return the hex string
+                int(value, 16)
+                return value
+            except ValueError:
+                raise exceptions.ValidationError(
+                    self.error_messages['invalid'],
+                    code='invalid',
+                    params={'value': value},
+                )
+        except (ValueError, TypeError):
+            raise exceptions.ValidationError(
+                self.error_messages['invalid'],
+                code='invalid',
+                params={'value': value},
+            )
+
+b) in django/contrib/auth/__init__.py (the login() function):
+
+try:
+       request.session[SESSION_KEY] = user._meta.pk.value_to_string(user)
+   except Exception:
+       request.session[SESSION_KEY] = user.id

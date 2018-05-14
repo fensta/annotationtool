@@ -1,0 +1,107 @@
+How to deploy the program with Openshift?
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!CAREFUL: When updating the server manually, e.g., by using FileZilla, DELETE THE UPDATED .PYC FILE!!!
+!!!make sure the deploy hook under .openshift/action_hooks/ is executable -> see whether some error message is shown when deploying the app!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+1. Set up Python 2.7 app in Openshift
+2. Add MongoDB 2.4 cartridge
+3. Monkey-patch Django 1.8.3 on Openshift manually: overwrite the files under /var/lib/openshift/571873320c1e66c475000195/app-root/runtime/dependencies/python/virtenv/lib/python2.7/site-packages/django/ with the ones provided in the folder "manually_adjusted_django1.8.3..."
+4. Set roles of "admin" in admin and user DB to (you can use RockMongo or RoboMongo):
+ "role": [
+     {
+       "role": "root",
+       "db": "admin"
+    },
+     {
+       "role": "readWrite",
+       "db": "user"
+    },
+     {
+       "role": "readWrite",
+       "db": "tweets"
+    }
+  ],
+4. Delete of "admin" user the "readonly": false property as only "role" or "readonly" should exist
+5. Upload tweets into MongoDB (see below for commands)
+6. Add annotators to the DB using manage_annotators.py (see below for commands)
+
+
+Download all tweets from Openshift (pre-runs are stored here: /media/data/dataset/annotation_tool_preruns_db_dumps_openshift):
+-----------------------------------
+Connect to the app: rhc ssh -a annotationtool
+
+Open a console and store users and tweets separately in /tmp on server -> download using filezilla:
+mongoexport --host $OPENSHIFT_MONGODB_DB_HOST --port $OPENSHIFT_MONGODB_DB_PORT --username $OPENSHIFT_MONGODB_DB_USERNAME --password $OPENSHIFT_MONGODB_DB_PASSWORD --db annotationtool --collection user --out /tmp/user.json
+mongoexport --host $OPENSHIFT_MONGODB_DB_HOST --port $OPENSHIFT_MONGODB_DB_PORT --username $OPENSHIFT_MONGODB_DB_USERNAME --password $OPENSHIFT_MONGODB_DB_PASSWORD --db annotationtool --collection tweets --out /tmp/tweets.json
+
+Import locally using (drop collections before importing from file):
+mongoimport --db annotationtool --collection user --file /home/fensta/Downloads/user_prerun2_dump.json
+mongoimport --db annotationtool --collection tweets --file /home/fensta/Downloads/tweets_prerun2_dump.json
+
+Upload all tweets to be stored in MongoDB:
+------------------------------------------
+http://stackoverflow.com/questions/9762268/import-data-into-openshift-mongodb
+Upload the json file containing all tweets into /tmp/tweets.json with FileZilla
+rhc ssh -a annotationtool
+mongoimport --port $OPENSHIFT_MONGODB_DB_PORT -h $OPENSHIFT_MONGODB_DB_HOST -u $OPENSHIFT_MONGODB_DB_USERNAME -p$OPENSHIFT_MONGODB_DB_PASSWORD -d annotationtool -c tweets /tmp/tweets.json
+OR use Rockmongo interface (add cartridge) to import the uploaded json file
+see merge_all_tweets_into_json_for_db_import.py for same command used for local deployment
+
+
+Add annotator "aa@gmail.com" as part of group M to MongoDB named annotationtool:
+---------------------------------------------------------------------------------------------
+cd app-root/repo/Labeller/ # this is where the script to add users resides
+python manage_annotators.py -p $OPENSHIFT_MONGODB_DB_PORT --db_host $OPENSHIFT_MONGODB_DB_HOST --db_name annotationtool --group M aa@gmail.com --add
+see manage_annotators.py for same command used for local deployment
+
+
+Delete annotator from MongoDB with the name "aa@gmail.com":
+------------------------------------------------------------------------
+cd app-root/repo/Labeller/ # this is where the script to add users resides
+python manage_annotators.py -p $OPENSHIFT_MONGODB_DB_PORT --db_host $OPENSHIFT_MONGODB_DB_HOST --db_name annotationtool --delete
+
+
+Remote access to MongoDB for Robomongo for debugging etc:
+---------------------------------------------------------
+http://stackoverflow.com/questions/27033515/i-want-to-connect-openshift-mongodb-database-from-my-local-client-tools
+To inspect MongoDB with Robomongo: rhc port-forward annotationtool
+Choose the port according to the previous command
+Then start Robomongo connection: give it a name, enter under "authentication" name of DB user and his/her pw, SELECT as auth mechanism "MongoDB-CR"
+
+
+Get logs in console:
+--------------------
+rhc tail -a annotationtool
+
+
+Get access details (user, pw) for DB:
+-------------------------------------
+rhc app-show annotationtool
+
+
+Access server with FileZilla to upload/edit/view files
+------------------------------------------------------
+rhc app-show annotationtool
+https://blog.openshift.com/using-filezilla-and-sftp-on-windows-with-openshift/
+
+
+Access to server via ssh:
+-------------------------
+rhc ssh -a annotationtool
+
+
+Restart app
+-----------
+rhc restart-app --app annotationtool
+
+
+How to update source code on server?
+------------------------------------
+copy updated code from the project "AnnotationToolOpenshift" into the project directory (here it's called "annotationtool")
+go into project directory (it's stored under /home/fensta/):
+cd annotationtool
+git add .
+git commit -am "your message"
+git push

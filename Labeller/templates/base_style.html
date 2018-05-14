@@ -1,0 +1,81 @@
+<html>
+<head>
+	<title>TWEET LABELER</title>
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href=
+        "{%static "css/labeler_style.css" %}">
+    <script src="{% static "javascript/jquery-2.1.4.min.js" %}"></script>
+    <script src="{% static "javascript/timer.js" %}"></script>
+    <script src="{% static "javascript/jquery.js" %}"></script>
+    <script src="{% static "javascript/jquery-ui.js" %}"></script>
+    <link rel="stylesheet" type="text/css" href="{%static "css/basic.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/mine.css" %}">
+    <link rel="stylesheet" type="text/css" href="
+    {% static "css/registration.css" %}">
+     <link rel="stylesheet" type="text/css" href="
+     {% static "css/jquery-ui.css" %}">
+</head>
+<body>
+
+<div class="big_container centered">
+    <div class="container">
+        {% block menu %}
+            <div id="menu">
+                <a id="logout" href="" title="Login/Logout">
+                    <i class="icon logout" onclick="logout(event)"></i>
+                </a>
+                <label class="logged_user">Logged in as '
+                    <span>{{ username }}</span>'</label>
+            </div>
+        {% endblock %}
+        {% block title %}
+            <h1 id="tweet_id" style="display:none;"> {{ tweet_id }}</h1>
+            <div id="current_total" style="display:none;">{{ current_prog }}</div>
+            <div id="total_total" style="display:none;">{{ total_prog }}</div>
+            <div id="total_progress" style="display:none;">Total:</div>
+            <div id="current_session" style="display:none;">{{ current_sess }}</div>
+            <div id="total_session" style="display:none;">{{ total_sess }}</div>
+            <div id="session_progress" style="display:none;">Session:</div>
+            <div id="abort_session"></div>
+        {% endblock %}
+    </div>
+
+    <div id="centered_frame">
+        <div id="mainframe">
+            <div id="total">
+                <div class="inner_text">#Annotated tweets overall: </div>
+            </div>
+            <div id="session">
+                <div class="inner_text">#Annotated tweets in session: </div>
+            </div>
+            <div id="tweet_div">
+                {% block  previous %}
+                {% endblock %}
+                <div class="tweet_style" id="tweet_text">
+                    {# Display all characters without escaping them, e.g. '&' instead of '&amp'#}
+                    {# http://www.djangobook.com/en/2.0/chapter09.html#}
+                    {% block tweet %}
+                        <span id="tweet_text_span"> {{ tweet|safe }} </span>
+                        <img class="resize" id="load_screen" src=
+                                "{% static "img/load.gif" %}"
+                             alt="Loading..."/>
+                    {% endblock %}
+                </div>
+                {% block next %}
+                {% endblock %}
+            </div>
+        </div>
+
+        <div id="annotation_div">
+            {% block annotation %}{% endblock %}
+        </div>
+    </div>
+
+{#    <div class="messages slide_messages" >#}
+        {% block messages %} {% endblock %}
+{#    </div>#}
+</div>
+
+</body>
+</html>
+

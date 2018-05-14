@@ -1,0 +1,139 @@
+{% extends 'base_style.html' %}
+{#DON'T REMOVE next line because otherwise static won't work#}
+{% load staticfiles %}
+{% block previous %}
+    <form onsubmit="return false;">
+        {% csrf_token %}
+        <div id="previous_div">
+            <input name="PREVIOUS" type="button" id="previous"
+                  class="myButton ctrl_btn_disabled">
+            <label for="previous">
+                <a class="centered_img previous" title="Go back to previous
+                tweet" onclick="previous_tweet(event);">Previous</a>
+            </label>
+        </div>
+    </form>
+{% endblock %}
+
+{% block next %}
+    <form onsubmit="return false;">
+        {% csrf_token %}
+        <div id="next_div">
+             <input name="NEXT" type="button" value="Next" class="myButton ctrl_btn_disabled"
+                   id="next">
+            <label for="next">
+                 <a class="centered_img next" onclick="next_tweet(event);"
+                    title="Go to next tweet">next</a>
+            </label>
+
+        </div>
+    </form>
+{% endblock %}
+
+{% block annotation %}
+{#  false prevents any page reload and sending POST which is done via Ajax #}
+    <form id="annotation_form" onsubmit="return false;">
+        {% csrf_token %}
+        <div id="anno_buttons">
+            <div id="relevance_div">
+                <div id="relevance_button_div">
+                    <p> Which label is more suitable?</p>
+                    <input id="irrelevant" name="relevance" value="Irrelevant"
+                           type="radio" class="first_label_set">
+                    <label for="irrelevant"> Irrelevant</label>
+                    <input id="relevant" name="relevance" value="Relevant"
+                           type="radio" class="first_label_set">
+                    <label for="relevant"> Relevant</label>
+                    <div id="rel_error" class="error_div"></div>
+                    <label class="error"></label>
+                </div>
+
+                <div id="confidence_relevance_div" class="confidence_style">
+                    <p> How confident are you about your decision?</p>
+                    <input class="first_label_set" type="radio"
+                           name="toggle_rel" value="High" id="rel_high">
+                    <label for="rel_high"> High </label>
+                    <input type="radio" name="toggle_rel" value="Low"
+                           class="first_label_set" id="rel_low">
+                    <label for="rel_low"> Low </label>
+                     <div id="rel_conf_error" class="error_div"></div>
+                    <label class="error"></label>
+                </div>
+            </div>
+
+            <div id="fact_div">
+                <div id="fact_button_div">
+                    <p> Which label is more suitable?</p>
+                    <input id="non_factual" name="fact" value="Non-factual"
+                           type="radio" class="second_label_set">
+                    <label for="non_factual">Non-factual</label>
+                    <input id="factual" name="fact" value="Factual"
+                           type="radio" class="second_label_set">
+                    <label for="factual">Factual</label>
+                    <div id="fac_error" class="error_div"></div>
+                    <label class="error"></label>
+                </div>
+
+                <div id="confidence_fact_div" class="confidence_style">
+                    <p>How confident are you about your decision?</p>
+                    <input type="radio" class="second_label_set"
+                           name="toggle_fac" value="High" id="fact_high">
+                    <label for="fact_high" > High </label>
+                    <input type="radio" name="toggle_fac" id="fact_low"
+                           class="second_label_set" value="Low">
+                         <label for="fact_low" > Low </label>
+                    <div id="fac_conf_error" class="error_div"></div>
+                    <label class="error"></label>
+                </div>
+            </div>
+
+            <div id="opinion_div">
+                <div id="opinion_button_div">
+                    <p> Which label is more suitable?</p>
+                    <input id="negative" name="opinion" value="Negative"
+                           type="radio" class="third_label_set">
+                    <label for="negative">Negative</label>
+                    <input id="positive" name="opinion" value="Positive"
+                           type="radio" class="third_label_set">
+                    <label for="positive">Positive</label>
+                    <div id="opi_error" class="error_div"></div>
+                    <label class="error"></label>
+                </div>
+
+                <div id="confidence_opinion_div" class="confidence_style">
+                    <p>How confident are you about your decision?</p>
+                    <input type="radio" name="toggle_opi"
+                           class="third_label_set" id="opi_high" value="High">
+                    <label for="opi_high"> High </label>
+                    <input type="radio" name="toggle_opi" id="opi_low"
+                           class="third_label_set" value="Low">
+                    <label for="opi_low"> Low </label>
+                    <div id="opi_conf_error" class="error_div"></div>
+                    <label class="error"></label>
+                </div>
+            </div>
+        </div>
+
+        <div id="submit_div">
+             <input name="PAUSE" type="submit" value="Pause" id="pause"
+                  class="submitButton" onclick="pause_anno(event)">
+            <input name="SUBMIT" id="submit" type="submit" value="Submit"
+              class="submitButton" onclick="send_data(event);">
+        </div>
+    </form>
+    {% block messages %}
+        <div id="session_finished"></div>
+        <label id="next_tweet" style="display:none;">{{ has_next }}</label>
+        <label id="previous_tweet" style="display:none;">{{ has_previous }}</label>
+    {% endblock %}
+    <p hidden id="test1"></p>
+    <p hidden id="test2"></p>
+    <p hidden id="test3"></p>
+    <p hidden id="test4"></p>
+    <p hidden id="test5"></p>
+    <p hidden id="test6"></p>
+{% endblock %}
+
+
+
+
